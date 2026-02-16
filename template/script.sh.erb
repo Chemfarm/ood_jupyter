@@ -26,4 +26,5 @@ echo "TIMING - Starting jupyter at: $(date)"
 
 # Launch the Jupyter Notebook Server
 set -x
-jupyter notebook --config="${CONFIG_FILE}" <%= context.extra_jupyter_args %>
+PATH=/apps01/apps/anaconda3-2022.10/envs/jupyter-notebook-<%= context.jupyter_version %>/bin:$PATH 
+/apps01/apps/anaconda3-2022.10/envs/jupyter-notebook-<%= context.jupyter_version %>/bin/jupyter <%= context.jupyter_type %> --config="${CONFIG_FILE}" <%= context.extra_jupyter_args %>

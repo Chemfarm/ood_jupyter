@@ -8,7 +8,7 @@
 # under /etc/ood/config/clusters.d/*.yml
 # @example Use the Owens cluster at Ohio Supercomputer Center
 #     cluster: "owens"
-cluster: ""
+cluster: "chemfarm"
 
 # Define attribute values that aren't meant to be modified by the user within
 # the Dashboard form
@@ -25,12 +25,79 @@ attributes:
   #     modules: "python/3.5"
   # @example Using combination of modules
   #     modules: "python/3.5 cuda/8.0.44"
-  modules: "python"
+  modules: ""
 
+  working_dir:
+    widget: "path_selector"
+    label: "Working Directory"
+    data-target-file-type: dirs  # Valid values are: files, dirs, or both
+    readonly: false
+    help: "Select your project directory; defaults to $HOME"
+  jupyter_version:
+    widget: select
+    label: "Jupyter Version"
+    value: "7.5.3"
+    help: |
+      Loading the required version of the jupyter
+    options:
+      - ["Jupyter 7.5.3", "7.5.3"]
+  jupyter_type:
+    widget: select
+    label: "Jupyter Type"
+    value: "notebook"
+    help: |
+      Loading the Jupyter Notebook or Jupyter Lab
+    options:
+      - ["Jupyter Notebook", "notebook"]
+      - ["Jupyter Lab",      "lab"]
   # Any extra command line arguments to feed to the `jupyter notebook ...`
   # command that launches the Jupyter notebook within the batch job
   extra_jupyter_args: ""
-
+  queue:
+    widget: select
+    label: "Queue"
+    value: "short"
+    options:
+      - [ "Short",  "short",
+    data-max-num-cpus: 96, data-min-num-cpus: 1, data-label-num-cpus: 'Number of CPUs (1-96)',
+    data-max-mem: 64, data-min-mem: 1, data-label-mem: 'Memory amount, GB (1-64)',
+    data-hide-num-gpus: true,
+    data-max-bc-num-hours: 1, data-min-bc-num-hours: 1,  data-label-bc-num-hours: 'Walltime, hours (1-1)']
+      - [ "Medium", "medium",
+    data-max-num-cpus: 256, data-min-num-cpus: 1, data-label-num-cpus: 'Number of CPUs (1-256)',
+    data-max-mem: 1500, data-min-mem: 1, data-label-mem: 'Memory amount in GB (1-1500)',
+    data-hide-num-gpus: true,
+    data-max-bc-num-hours: 48, data-min-bc-num-hours: 1,  data-label-bc-num-hours: 'Walltime, hours (1-120)']
+      - [ "Long", "long",
+    data-max-num-cpus: 256, data-min-num-cpus: 1, data-label-num-cpus: 'Number of CPUs (1-256)',
+    data-max-mem: 1500, data-min-mem: 1, data-label-mem: 'Memory amount in GB (1-1500)',
+    data-hide-num-gpus: true,
+    data-max-bc-num-hours: 1440, data-min-bc-num-hours: 1,  data-label-bc-num-hours: 'Walltime, hours (1-120)']
+      - [ "P72", "p72",
+    data-max-num-cpus: 256, data-min-num-cpus: 8, data-label-num-cpus: 'Number of CPUs (8-256)',
+    data-max-mem: 1500, data-min-mem: 1, data-label-mem: 'Memory amount in GB (1-1500)',
+    data-hide-num-gpus: true,
+    data-max-bc-num-hours: 72, data-min-bc-num-hours: 1,  data-label-bc-num-hours: 'Walltime, hours (1-72)']
+      - [ "GPU",    "gpuq", 
+    data-max-num-cpus: 16,  data-min-num-cpus: 1, data-label-num-cpus: 'Number of CPUs (1-16)',
+    data-max-mem: 750,  data-min-mem: 1, data-label-mem: 'Memory amount in GB (1-750)',
+    data-max-num-gpus: 8, data-min-num-gpus: 1, data-label-num-gpus: 'Number of GPUs (1-8)',
+    data-max-bc-num-hours: 120, data-min-bc-num-hours: 1,  data-label-bc-num-hours: 'Walltime, hours (1-120)']
+  num_cpus:
+    widget: "number_field"
+    label: "Number of cores"
+    value: 1
+    step: 1
+  mem:
+    widget: "number_field"
+    label: "Memory amount, GB"
+    value: 1
+    step: 1
+  num_gpus:
+    widget: "number_field"
+    label: "Number of GPUs"
+    value: 1
+    step: 1
 # All of the attributes that make up the Dashboard form (in respective order),
 # and made available to the submit configuration file and the template ERB
 # files
@@ -42,9 +109,13 @@ attributes:
 #   Dashboard
 form:
   - modules
+  - working_dir
+  - jupyter_version
+  - jupyter_type
   - extra_jupyter_args
-  - bc_account
-  - bc_queue
+  - queue
+  - num_cpus
+  - mem
+  - num_gpus
   - bc_num_hours
-  - bc_num_slots
-  - bc_email_on_started
+
