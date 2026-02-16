@@ -44,7 +44,7 @@ attributes:
   jupyter_type:
     widget: select
     label: "Jupyter Type"
-    value: "notebook"
+    value: "lab"
     help: |
       Loading the Jupyter Notebook or Jupyter Lab
     options:
