@@ -57,6 +57,10 @@ attributes:
     widget: select
     label: "Queue"
     value: "short"
+    help: |
+      Select the appropriate queue for your job. Each queue defines
+      different limits for walltime, number of CPUs, and available memory.
+      Choosing the correct queue ensures optimal scheduling and resource allocation.
     options:
       - [ "Short",  "short",
     data-max-num-cpus: 96, data-min-num-cpus: 1, data-label-num-cpus: 'Number of CPUs (1-96)',
